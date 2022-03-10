@@ -1,13 +1,10 @@
 package com.mvc.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.mvc.constant.OrderStatus;
 
@@ -29,5 +26,7 @@ public class Order extends BaseEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+
 
 }

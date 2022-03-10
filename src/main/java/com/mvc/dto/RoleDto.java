@@ -19,6 +19,6 @@ public class RoleDto extends BaseDto {
 
     private Set<PermissionDto> permissions = new HashSet<>();
 
-    // private Set<UserDto> users = new HashSet<>();
+//     private Set<UserDto> users = new HashSet<>();
 
 }

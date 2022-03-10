@@ -16,5 +16,7 @@ public class PermissionDto extends BaseDto {
 
     private String id;
     private String description;
+//    private Set<UserDto> users = new HashSet<>();
+
 
 }
