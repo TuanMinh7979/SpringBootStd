@@ -1,10 +1,15 @@
 package com.mvc.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.mvc.constant.OrderStatus;
 
@@ -17,7 +22,8 @@ import lombok.Setter;
 @Table(name = "order1")
 public class Order extends BaseEntity implements Serializable {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "user_id")
     private String userId;
@@ -26,7 +32,5 @@ public class Order extends BaseEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-
-
 
 }

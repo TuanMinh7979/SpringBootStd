@@ -21,5 +21,9 @@ public class UserDto extends BaseDto {
 
     private String password;
 
+    private Integer balance;
+
+//nếu đặt relationship ở đây thì trong mapper UserDtp.setRole(user.getRole)
+    //đôi khi ta không muốn dùng role và đôi khi phải dùng
     private Set<RoleDto> roles = new HashSet<>();
 }

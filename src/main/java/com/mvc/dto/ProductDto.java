@@ -19,7 +19,7 @@ public class ProductDto extends BaseDto {
 
     private Integer amount;
 
-    private Integer price;
+
 
     private String status;
 

@@ -24,14 +24,14 @@ public class Product extends BaseEntity implements Serializable {
 
     private Integer amount;
 
-    private Integer price;
 
-    public Product(Integer id, String code, String name, Integer amount, Integer price, String status) {
+
+    public Product(Integer id, String code, String name, Integer amount, String status) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.amount = amount;
-        this.price = price;
+
         this.status = status;
     }
 

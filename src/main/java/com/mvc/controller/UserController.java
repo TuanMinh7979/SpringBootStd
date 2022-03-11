@@ -3,18 +3,14 @@ package com.mvc.controller;
 import com.mvc.dto.UserDto;
 import com.mvc.dto.request.CreateUserRequest;
 import com.mvc.dto.response.UserResponse;
+
 import com.mvc.repo.UserRepo;
 import com.mvc.service.UserService;
-import com.mvc.service.factory.UserFactory;
 
+import com.mvc.service.factory.UserFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 

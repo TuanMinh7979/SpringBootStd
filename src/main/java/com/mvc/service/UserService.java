@@ -27,6 +27,16 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final UserRepo userRepo;
+    public UserDto getUserById(String userId){
+        return userRepo.findById(userId)
+                .map(userMapper::toUserDto)
+                .orElseGet(()->{
+
+                    log.warn("User with id {} not found", userId);
+                    throw new ResourceNotFoundException("Khong tim thay user");
+                });
+    }
+
 
     public UserDto getUser(String username) {
         return userRepo.findByUsernameWithPermission(username)
