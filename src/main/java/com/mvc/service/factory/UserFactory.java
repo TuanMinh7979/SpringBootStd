@@ -22,7 +22,7 @@ public class UserFactory {
     public static User create(final CreateUserRequest userRequest) {
 
         return User.builder()
-                .id(UUID.randomUUID().toString())
+                .id(String.valueOf((int)(Math.random() * (100 - 5)) + 5))
                 .username(userRequest.getUsername())
                 .password(PECODER.encode(userRequest.getPassword()))
                 .balance(0)

@@ -19,10 +19,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/product").permitAll()
+                .antMatchers(HttpMethod.GET, "/","/product").permitAll()
                 //neu khong chi dinh method thi se la tat ca phuong thuc deu dc
-                .antMatchers("/user/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/user**").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.GET,"/user**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
+                //cái nào khác permit all thì đều phải authenticate httpbasic
                 .and()
                 .httpBasic();
     }
