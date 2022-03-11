@@ -23,17 +23,13 @@ public class UserController {
     private final UserRepo userRepo;
 
     @GetMapping("{username}")
+    // trong th cần lấy thêm set vai trò và quyền thì ra return UserDto
+    // nếu không cần thiết thì trả về UserResponse thì ok hơn
+    // trong trường cần xử lý phức tạp thì dùng userDto
     public ResponseEntity<UserDto> searchByUsernameWithPermission(@PathVariable("username") String username) {
         return new ResponseEntity<>(userService.findByUsernameWithPermission(username), HttpStatus.OK);
 
     }
-    //TEST
-//    @GetMapping("{username}")
-//    public ResponseEntity<User> searchByUsernameWithPermission(@PathVariable("username") String username) {
-//        return new ResponseEntity<>(userService.findByUsernameWithPermissionUser(username), HttpStatus.OK);
-//
-//    }
-    //TEST
 
     // @GetMapping("detail/{username}")
     // public String searchByUsernameWithPermission(@PathVariable("username") String

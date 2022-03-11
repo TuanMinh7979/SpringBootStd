@@ -16,4 +16,5 @@ public interface UserRepo extends JpaRepository<User, String> {
     @Query("select u from User u join fetch u.roles r join fetch r.permissions where u.username= :username")
     Optional<User> findByUsernameWithPermission(@Param("username") String username);
 
+    boolean existsByUsername(String username);
 }

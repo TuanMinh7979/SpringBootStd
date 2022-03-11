@@ -3,6 +3,7 @@ package com.mvc.service;
 import com.mvc.dto.UserDto;
 import com.mvc.dto.request.CreateUserRequest;
 import com.mvc.dto.response.UserResponse;
+import com.mvc.exception.BadRequesetException;
 import com.mvc.exception.ResourceNotFoundException;
 import com.mvc.model.Permission;
 import com.mvc.model.Role;
@@ -26,32 +27,37 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final UserRepo userRepo;
-//
-//    public UserDto findByUsernameWithPermission(String username) {
-// Khi CUSTOM QUERY thì vẫn có thể parse về pojo nhưng lại còn có thể parse về JSON còn pojo THÌ KHÔNG (DO CÙNG BỊ LOOP JSON)
-    //NHƯNG DO RELATION SHIP BÊN DTO Ta không đặt 2 quan hệ giữa dto với nhau nên sẽ không bị , mặt khác nếu đặt
-    //2 quan hệ qua lại thì vẫn lỗi.
+    //
+    // public UserDto findByUsernameWithPermission(String username) {
+    // Khi CUSTOM QUERY thì vẫn có thể parse về pojo nhưng lại còn có thể parse về
+    // JSON còn pojo THÌ KHÔNG (DO CÙNG BỊ LOOP JSON)
+    // NHƯNG DO RELATION SHIP BÊN DTO Ta không đặt 2 quan hệ giữa dto với nhau nên
+    // sẽ không bị , mặt khác nếu đặt
+    // 2 quan hệ qua lại thì vẫn lỗi.
 
-//        return userRepo.findByUsernameWithPermission(username)
-//                .map(usermodel -> userMapper.toUserDto(usermodel))
-//                .orElseGet(() -> {
-//                    log.warn("User not found" + username);
-//                    throw new ResourceNotFoundException("Khong tim thay nguoi dung");
-//                });
-//    }
+    // return userRepo.findByUsernameWithPermission(username)
+    // .map(usermodel -> userMapper.toUserDto(usermodel))
+    // .orElseGet(() -> {
+    // log.warn("User not found" + username);
+    // throw new ResourceNotFoundException("Khong tim thay nguoi dung");
+    // });
+    // }
 
     public UserDto findByUsernameWithPermission(String username) {
         User user = userRepo.findByUsernameWithPermission(username).get();
         System.out.println(user.getRoles());
         Set<Role> roles = user.getRoles();
         for (Role role : roles) {
-            System.out.println("-" +role.getDescription() + " "+role.getId());
-            for(Permission per : role.getPermissions()){
-                System.out.println("---"+per.getDescription());
+            System.out.println("-" + role.getDescription() + " " + role.getId());
+            for (Permission per : role.getPermissions()) {
+                System.out.println("---" + per.getDescription());
             }
         }
 
-        //nếu trả về một DTO THÌ SẼ ĐC DO BẢN THÂN TRUY VẤN CẢ HAI TH LÀ 1 VÀ ĐỀU SINH LOOP TẠI KẾT QỦA TRUY VẤN
+        // nếu trả về một DTO THÌ SẼ ĐC DO BẢN THÂN TRUY VẤN CẢ HAI TH LÀ 1 VÀ ĐỀU SINH
+        // LOOP TẠI KẾT QỦA TRUY VẤN NHƯNG TẠI DTO TA ĐẶT(DO TA) CÓ ÍT RÀNG BUỘC HƠN
+        // JACKSON CÓ THỂ
+        // PARSE ĐC THÀNH CÔNG.
         //
         return userMapper.toUserDto(user);
 
@@ -59,12 +65,14 @@ public class UserService {
 
     @Transactional
     public UserResponse createUser(final CreateUserRequest userRequest) {
+        if(userRepo.existsByUsername(userRequest.getUsername())){
+            log.warn("user name {} existed"+userRequest.getUsername());
+            throw new BadRequesetException("Ten tai khoan da ton tai!");
+        }
         User user = UserFactory.create(userRequest);
         userRepo.save(user);
         return userMapper.toUserResponse(user);
 
     }
 
-
 }
-
