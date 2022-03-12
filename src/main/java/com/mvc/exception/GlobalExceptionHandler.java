@@ -2,6 +2,7 @@ package com.mvc.exception;
 
 
 import com.mvc.dto.response.ErrResponse;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     //when have exeption co the custom lai exception va return in json format to client
 //Muon bat exeption nao thi ta cho no vao trong exceptionhandler
-    @ExceptionHandler({BadRequesetException.class, ResourceNotFoundException.class})
+    @ExceptionHandler({BadRequesetException.class, ResourceNotFoundException.class, AuthenticationException.class})
     public ResponseEntity<ErrResponse> handle(Exception e) {
 
         return ResponseEntity

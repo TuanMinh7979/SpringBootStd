@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvc.constant.UserStatus;
 
 import lombok.*;
@@ -33,9 +34,15 @@ public class User extends BaseEntity implements Serializable {
     // @JsonIgnore
     //// (*) dung JsonIgnore thi mapstruct k render ra cac quan he nen xac dinh dung
     //// dto thi khong dung JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
+
     @JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    public void redBalance(Integer amount) {
+        this.balance -= amount;
+
+    }
 
 
 }

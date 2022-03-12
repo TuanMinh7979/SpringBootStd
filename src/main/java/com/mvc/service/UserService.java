@@ -39,6 +39,7 @@ public class UserService {
 
 
     public UserDto getUser(String username) {
+        System.out.println("QUERY AUTHEN");
         return userRepo.findByUsernameWithPermission(username)
                 .map(usermodel -> userMapper.toUserDto(usermodel))
                 .orElseGet(() -> {
@@ -58,6 +59,7 @@ public class UserService {
                 System.out.println("---" + per.getDescription());
             }
         }
+
         //test
 
         // nếu trả về một DTO THÌ SẼ ĐC DO BẢN THÂN TRUY VẤN CẢ HAI TH LÀ 1 VÀ ĐỀU SINH
@@ -71,6 +73,7 @@ public class UserService {
 
     @Transactional
     public UserResponse createUser(final CreateUserRequest userRequest) {
+        System.out.println("why is exist:"+userRequest.getUsername());
         if (userRepo.existsByUsername(userRequest.getUsername())) {
             log.warn("user name {} existed" + userRequest.getUsername());
             throw new BadRequesetException("Ten tai khoan da ton tai!");

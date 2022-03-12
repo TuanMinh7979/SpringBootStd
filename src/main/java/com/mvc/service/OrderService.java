@@ -1,14 +1,11 @@
 package com.mvc.service;
 
-import com.mvc.constant.OrderStatus;
 import com.mvc.dto.OrderDto;
 import com.mvc.dto.ProductDto;
-import com.mvc.dto.UserDto;
 import com.mvc.dto.request.CreateOrderRequest;
 import com.mvc.exception.BadRequesetException;
 import com.mvc.exception.ResourceNotFoundException;
 import com.mvc.model.Order;
-import com.mvc.model.Product;
 import com.mvc.model.User;
 import com.mvc.repo.OrderRepo;
 import com.mvc.repo.UserRepo;
@@ -18,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
+
 
 @Slf4j
 @Service
@@ -32,6 +29,7 @@ public class OrderService {
     private final UserRepo userRepo;
 
     public OrderDto getOrder(Integer id) {
+
         return orderRepo.findById(id)
                 .map(orderMapper::toOrderDto)
                 .orElseGet(() -> {
@@ -50,13 +48,16 @@ public class OrderService {
             log.warn("User {} do not enough balance", user.getUsername());
             throw new BadRequesetException("Balance not enough ");
         }
-        Order order = new Order();
-        order.setUserId(user.getId());
-        order.setAmount(productDto.getAmount());
-        order.setStatus(OrderStatus.PAID);
-
-
-        user.setBalance(user.getBalance() - productDto.getAmount());
+        //CO TRANSACTIONAL THI CO THE LAY DUOC
+        //NẾU KHÔNG CÓ THÌ SẼ LÀ FETCH LAXY EXCEPTION(ban đầu sẽ không lấy như khi gọi getRole thì có transactional sẽ truy vấn thêm
+        // còn không có thì THROW LAZY EXCEPTION)
+//        Set<Role> setr= user.getRoles();
+//        for(Role r: setr){
+//            System.out.println(r.getDescription());
+//        }
+        user.redBalance(productDto.getAmount());
+        Order order = orderMapper.updateOrder(productDto.getAmount(), user.getId());
+        //CÓ TRANSACTIONAL CÓ THỂ THAY ĐỔI ENTITY MÀ KHÔNG CẦN LƯU LẠI
         orderRepo.save(order);
 
 

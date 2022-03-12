@@ -11,10 +11,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepo extends JpaRepository<User, String> {
-    Optional<User> findUserByUsername(String username);
+
 
     @Query("select u from User u left join fetch u.roles r left join fetch r.permissions where u.username= :username")
     Optional<User> findByUsernameWithPermission(@Param("username") String username);
+
+    
 
     boolean existsByUsername(String username);
 }

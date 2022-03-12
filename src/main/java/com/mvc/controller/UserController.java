@@ -41,7 +41,7 @@ public class UserController {
 
     @PostMapping("add")
     public UserResponse createUser(@RequestBody final CreateUserRequest userRequest) {
-        userRepo.save(UserFactory.create(userRequest));
+//        userRepo.save(UserFactory.create(userRequest));
         return userService.createUser(userRequest);
 
     }

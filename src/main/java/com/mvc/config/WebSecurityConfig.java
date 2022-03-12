@@ -1,5 +1,9 @@
 package com.mvc.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mvc.exception.AccessDeniedHdleler;
+import com.mvc.exception.AuthenticationExceptionHdleler;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,8 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 @Configuration
 @EnableWebSecurity
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -19,14 +25,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/","/product").permitAll()
+                .antMatchers(HttpMethod.GET, "/", "/product").permitAll()
                 //neu khong chi dinh method thi se la tat ca phuong thuc deu dc
-                .antMatchers(HttpMethod.POST, "/user**").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.GET,"/user**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/user/**").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/user/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
                 //cái nào khác permit all thì đều phải authenticate httpbasic
                 .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new AuthenticationExceptionHdleler(objectMapper()))
+                .accessDeniedHandler(new AccessDeniedHdleler(objectMapper()))
+
+                .and()
                 .httpBasic();
+
+    }
+
+
+    @Bean
+    public ObjectMapper objectMapper(){
+        return new ObjectMapper();
     }
 
     @Bean
